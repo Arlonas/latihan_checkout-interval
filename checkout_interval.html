@@ -188,6 +188,22 @@
 
         const order = () => {
             let orderCustomer = document.getElementById("inputHarga")
+            orderCustomer = parseInt(orderCustomer)
+
+            if (orderCustomer > totalPrice()) {
+                alert(
+                    `Kembalian anda sebesar: 
+                    ${(orderCustomer - totalPrice()).toLocaleString()}`
+                )
+            }else if (orderCustomer === totalPrice()) {
+                alert(
+                    `Terima Kasih telah berbelanja dengan uang yang pas goblok`
+                )
+            }else if (orderCustomer < totalPrice()) {
+                alert(
+                    `Uang anda kurang sebesar: ${(totalPrice() - orderCustomer).toLocaleString()}
+                )
+            }
         }
 
 
