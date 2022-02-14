@@ -65,9 +65,14 @@
       <div id="checkout">
         <!-- <h3>Total Belanja anda: Rp. 100,000</h3> -->
       </div>
-      <input id="inputHarga" type="text" />
-      <td><button class="btn btn-secondary">Order</button></td>
-    </center>
+      <div id="inputharga">
+        <!-- <input id="inputHarga" type="text" />
+        <br>
+        <br>
+        <td><button onclick="order()" class="btn btn-secondary">Order</button></td>` -->
+
+        </div>
+      
 
     <script>
       class Product {
@@ -89,6 +94,7 @@
           this.cartQuantity = 0;
 
           return totalPrice;
+          
         };
       }
 
@@ -163,48 +169,71 @@
         let totalPrice = 0;
 
         productDatabase.forEach((val, idx) => {
-          totalPrice += val.checkout();
+          totalPrice += val.calculateTotalPrice();
         });
+        
         document.getElementById(
           "checkout"
         ).innerHTML = `<h3>Total belanjaan anda: Rp ${totalPrice.toLocaleString()} </h3>`;
-        renderData();
-      };
+        return totalPrice
+    };
+        
       
       let countDown
       let seconds = 10
       const checkout = () => {
         totalPrice()
         countDown = setInterval(() => {
+            document.getElementById("seconds").innerHTML =  `<h4>Countdown</h4>
+             <h4>${seconds}</h4>`
              seconds--
-             document.getElementById("seconds").innerHTML =  `<h4>Countdown</h4>
-       <h4>${seconds}</h4>`
-             if (seconds <= 0) {
-                 clearInterval(countDown);
-                }
+              if(seconds < 0) {
+                  clearInterval(countDown)
+              }
                 
             }, 1000)
+            document.getElementById("inputharga").innerHTML = `
+            <input id="inputHarga" type="text" />
+            <br>
+            <br>
+            <td><button onclick="order()" class="btn btn-secondary">Order</button></td>`
+            
+            
+            renderData()
+            
         };
 
         const order = () => {
-            let orderCustomer = document.getElementById("inputHarga")
+            let orderCustomer = document.getElementById("inputHarga").value
             orderCustomer = parseInt(orderCustomer)
-
+            console.log(orderCustomer, totalPrice())
             if (orderCustomer > totalPrice()) {
                 alert(
-                    `Kembalian anda sebesar: 
-                    ${(orderCustomer - totalPrice()).toLocaleString()}`
+                    `Kembalian anda sebesar: Rp.${(orderCustomer - totalPrice()).toLocaleString()}`
                 )
             }else if (orderCustomer === totalPrice()) {
                 alert(
-                    `Terima Kasih telah berbelanja dengan uang yang pas goblok`
+                    `Terima Kasih telah berbelanja dengan uang yang pas estupido`
                 )
             }else if (orderCustomer < totalPrice()) {
                 alert(
-                    `Uang anda kurang sebesar: ${(totalPrice() - orderCustomer).toLocaleString()}
+                    `Uang anda kurang sebesar: Rp.${(totalPrice() - orderCustomer).toLocaleString()}`
                 )
+                return
             }
+            productDatabase.forEach((val, idx) => {
+                val.stock -= val.cartQuantity
+                val.cartQuantity = 0 
+               
+            });
+            clearInterval(countDown)
+            document.getElementById("seconds").innerHTML = ""
+            document.getElementById("checkout").innerHTML = ""
+            document.getElementById("inputharga").innerHTML = ""
+            
+            renderData()
         }
+
 
 
       
