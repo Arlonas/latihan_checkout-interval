@@ -173,9 +173,6 @@
           totalPrice += val.calculateTotalPrice();
         });
         
-        document.getElementById(
-          "checkout"
-        ).innerHTML = `<h3>Total belanjaan anda: Rp ${totalPrice.toLocaleString()} </h3>`;
         return totalPrice
     };
         
@@ -183,7 +180,12 @@
       let countDown
       let seconds = 10
       const checkout = () => {
-        totalPrice()
+        //  !totalPrice()
+        if(totalPrice() == 0) {
+          alert("Blm anda beli apa apa mau anda checkout takada otak")
+          return
+        }
+        
         countDown = setInterval(() => {
             document.getElementById("seconds").innerHTML =  `<h4>Countdown</h4>
              <h4>${seconds}</h4>`
@@ -197,6 +199,9 @@
               }
                 
             }, 1000)
+        document.getElementById(
+          "checkout"
+        ).innerHTML = `<h3>Total belanjaan anda: Rp ${totalPrice().toLocaleString()} </h3>`;
             document.getElementById("inputharga").innerHTML = `
             <input id="inputHarga" type="text" />
             <br>
